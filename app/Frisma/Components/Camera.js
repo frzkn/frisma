@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { Camera, Permissions } from "expo"
-
+import {CameraButton, FiltersButton, GalleryButton} from './CameraButtons'
 export class CameraComponent extends Component {
+
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back
@@ -17,21 +18,24 @@ export class CameraComponent extends Component {
     const { hasCameraPermission } = this.state
     if (hasCameraPermission === null) {
       return <View />
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to Camera</Text>
     } else {
-      return (
+      return hasCameraPermission ? (
         <View style={{ flex: 1 }}>
-          <Camera type={this.state.type} style={{ flex: 1 }} />
+          <Camera
+            type={this.state.type}
+            style={{ flex: 1, justifyContent: "flex-end" }}
+          >
+            <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: "flex-end" }}>
+              <FiltersButton/>
+              <CameraButton/>
+              <GalleryButton/>
+            </View>
+          </Camera>
         </View>
+      ) : (
+        <Text>No access to Camera</Text>
       )
-      return <Camera />
     }
-    return (
-      <View style={styles.container}>
-        <Text> Camera </Text>
-      </View>
-    )
   }
 }
 
